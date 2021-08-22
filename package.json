@@ -1,0 +1,24 @@
+{
+  "name": "campreviews",
+  "version": "1.0.0",
+  "description": "Webiste to get campground reviews",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Denver-Meadows/CampReviews.git"
+  },
+  "author": "Denver Meadows",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Denver-Meadows/CampReviews/issues"
+  },
+  "homepage": "https://github.com/Denver-Meadows/CampReviews#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "mongoose": "^5.13.7"
+  }
+}
