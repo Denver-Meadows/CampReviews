@@ -42,6 +42,7 @@ app.get('/campgrounds/new', (req, res) => {
 
 // 2nd Part of Create (posting data from form)
 app.post('/campgrounds', async (req, res) => {
+  console.log(req.body)
   const campground = new Campground(req.body)
   await campground.save();
   res.redirect(`campgrounds/${campground._id}`)
@@ -57,6 +58,13 @@ app.get('/campgrounds/:id', async (req, res) => {
 app.get('/campgrounds/:id/edit', async (req, res) => {
   const campground = await Campground.findById(req.params.id)
   res.render(`campgrounds/edit`, { campground })
+})
+
+// Delete
+app.delete('/campgrounds/:id', async (req, res) => {
+  const { id } = req.params;
+  const campground = await Campground.findByIdAndDelete(id)
+  res.redirect('/campgrounds')
 })
 
 // Put for 2nd part of edit
