@@ -3,6 +3,8 @@ const app = express();
 const path = require('path');
 const port = 3000;
 
+const methodOverride = require('method-override');
+
 const mongoose = require('mongoose');
 const Campground = require('./models/campground'); // import model
 mongoose.connect('mongodb://localhost:27017/camp-review', {
@@ -21,6 +23,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.urlencoded({extended: true}));
+app.use(methodOverride('_method')) // pass in query string we want to use
 
 app.get('/', (req, res) => {
   res.render('home')
@@ -56,12 +59,13 @@ app.get('/campgrounds/:id/edit', async (req, res) => {
   res.render(`campgrounds/edit`, { campground })
 })
 
-// For testing
-app.get('/makecampground', async (req, res) => {
-  const camp = new Campground({ title: 'My Backyard', description: 'Cheap Camping'})
-  await camp.save();
-  res.send(camp)
+// Put for 2nd part of edit
+app.put('/campgrounds/:id', async (req, res) => {
+  const { id } = req.params;
+  const campground = await Campground.findByIdAndUpdate(id, {...req.body}, {useFindAndModify: false}) // pass in the id and then spread the req.body object into the new object
+  res.redirect(`/campgrounds/${campground._id}`)
 })
+
 
 app.listen(port, () => {
   console.log('Listening on 3000')
