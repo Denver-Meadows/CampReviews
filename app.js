@@ -25,6 +25,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method')) // pass in query string we want to use
 
+app.use((req, res, next) => {
+  console.log('that middleware')
+})
+
 app.get('/', (req, res) => {
   res.render('home')
 });
