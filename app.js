@@ -42,7 +42,6 @@ app.get('/campgrounds/new', (req, res) => {
 
 // 2nd Part of Create (posting data from form)
 app.post('/campgrounds', async (req, res) => {
-  console.log(req.body)
   const campground = new Campground(req.body)
   await campground.save();
   res.redirect(`campgrounds/${campground._id}`)
@@ -72,6 +71,13 @@ app.put('/campgrounds/:id', async (req, res) => {
   const { id } = req.params;
   const campground = await Campground.findByIdAndUpdate(id, {...req.body}, {useFindAndModify: false}) // pass in the id and then spread the req.body object into the new object
   res.redirect(`/campgrounds/${campground._id}`)
+})
+
+// Just for testing middleware of a 404
+app.use((req, res) => {
+  console.log('not found')
+  res.send('404 Not Found')
+  
 })
 
 
