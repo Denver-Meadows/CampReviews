@@ -3,6 +3,8 @@ const app = express();
 const path = require('path');
 const port = 3000;
 
+// ejs-mate is an add-on for ejs that helps make designing views easy.  We can create a boilerplate that is shared across all pages.
+const ejsMate = require('ejs-mate')
 const methodOverride = require('method-override');
 
 const mongoose = require('mongoose');
@@ -22,6 +24,7 @@ mongoose.connection.once("open", () => {
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+app.engine('ejs', ejsMate); // Tell the app we are using ejsMate as the engine that runs, parse's and basically makes sense of EJS instead of the default. With this we can define a layout file.
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method')) // pass in query string we want to use
 
