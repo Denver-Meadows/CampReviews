@@ -3,26 +3,26 @@
   <div class="row">
     <h1 class="text-center">Edit Campground</h1>
     <div class="col-6 offset-3">
-      <form action="/campgrounds/<%= campground._id%>?_method=PUT" method="POST">
+      <form action="/campgrounds/<%= campground._id%>?_method=PUT" method="POST" novalidate class="validated-form">
         <div class="mb-3">
           <label class="form-label" for="title">Title</label>
-          <input class="form-control" type="text" id="title" name="title" value="<%= campground.title %>">
+          <input class="form-control" type="text" id="title" name="title" value="<%= campground.title %>" required>
         </div>
   
         <div class="mb-3">
           <label class="form-label" for="location">Location</label>
-          <input class="form-control" type="text" id="location" name="location" value="<%= campground.location %>">
+          <input class="form-control" type="text" id="location" name="location" value="<%= campground.location %>" required>
         </div>
   
         <div class="mb-3">
           <label class="form-label" for="image">Image Url</label>
-          <input class="form-control" type="text" id="image" name="image" value="<%= campground.image %>">
+          <input class="form-control" type="text" id="image" name="image" value="<%= campground.image %>" required>
         </div>
         <div class="mb-3">
           <label class="form-label" for="price">Campground Price</label>
           <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">$</span>
-            <input type="text" class="form-control" value="<%= campground.price %>" id="price" name="price" placeholder="0.00" aria-label="price" aria-describedby="price-label">
+            <input type="text" class="form-control" value="<%= campground.price %>" id="price" name="price" placeholder="0.00" aria-label="price" aria-describedby="price-label" required>
           </div>
         </div>
 
