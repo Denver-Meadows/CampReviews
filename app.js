@@ -44,10 +44,14 @@ app.get('/campgrounds/new', (req, res) => {
 })
 
 // 2nd Part of Create (posting data from form)
-app.post('/campgrounds', async (req, res) => {
-  const campground = new Campground(req.body)
-  await campground.save();
-  res.redirect(`campgrounds/${campground._id}`)
+app.post('/campgrounds', async (req, res, next) => {
+  try {
+    const campground = new Campground(req.body)
+    await campground.save();
+    res.redirect(`campgrounds/${campground._id}`)
+  } catch (err) {
+    next(err)
+  }
 })
 
 // Show
@@ -76,13 +80,10 @@ app.put('/campgrounds/:id', async (req, res) => {
   res.redirect(`/campgrounds/${campground._id}`)
 })
 
-// Just for testing middleware of a 404
-app.use((req, res) => {
-  console.log('not found')
-  res.send('404 Not Found')
-  
+// basic error handling
+app.use((err, req, res, next) => {
+  res.send('somthing went wrooooooonnnnnG')
 })
-
 
 app.listen(port, () => {
   console.log('Listening on 3000')
