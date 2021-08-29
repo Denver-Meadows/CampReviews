@@ -1,0 +1,8 @@
+All routes have been setup and are working.
+
+Errors:   To handle errors we implemented a utilities file which has the catchAsync and ExpressError files.
+Review the files in the Express_Errors_CODE for a refresh on how these 2 error handling techinques work.
+We used bootstrap features to implement user side validation on the forms.  Forms will not allow to submit until
+filled out and turn green and red to indicate what needs to happen.
+For the server side validation, we are using Joi.  With Joi we can create a Schema and validate prior to mongoose
+handling and trying to send to the db.  We created a function that we can run as middleware.

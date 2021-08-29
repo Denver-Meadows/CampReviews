@@ -5,6 +5,8 @@ const port = 3000;
 
 // Joi is used for validating data.  We are defining a schema below in the new campground route
 const Joi = require('joi');
+// Destructuring here, we can call campgroundSchema below in the validate function.
+const { campgroundSchema } = require('./schemas.js')
 
 // Importing catchAsync
 const catchAsync = require('./utilities/catchAsync');
@@ -27,6 +29,18 @@ mongoose.connection.on("error", console.error.bind(console, "connection error:")
 mongoose.connection.once("open", () => {
   console.log("Database connected");
 });
+
+// Creating a middleware function to validate with Joi.
+const validateCampground = (req, res, next) => {
+    // Saving the result of the validation and passing an error if something is wrong
+    const result = campgroundSchema.validate(req.body)
+    if (result.error) { 
+      const msg = result.error.details.map(el => el.message).join(', ')
+      throw new ExpressError(msg, 400)
+    } else {
+      next()
+    }
+}
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -51,23 +65,7 @@ app.get('/campgrounds/new', (req, res) => {
 })
 
 // 2nd Part of Create (posting data from form)
-app.post('/campgrounds', catchAsync(async (req, res, next) => {
-  // this is not a mongoose schema, this will validate our data before we attempt to save with mongoose
-  const campgroundSchema = Joi.object({
-    title: Joi.string().required(),
-    price: Joi.number().required().min(0),
-    location: Joi.string().required(),
-    image: Joi.string(),
-    description: Joi.string().required(),
-  });
-
-  // Saving the result of the validation and passing an error if something is wrong
-  const result = campgroundSchema.validate(req.body)
-  if (result.error) { 
-    const msg = result.error.details.map(el => el.message).join(', ')
-    throw new ExpressError(msg, 400)
-  }
-
+app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) => {
   const campground = new Campground(req.body)
   await campground.save();
   res.redirect(`campgrounds/${campground._id}`)
@@ -93,7 +91,7 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
 }))
 
 // Put for 2nd part of edit
-app.put('/campgrounds/:id', catchAsync(async (req, res) => {
+app.put('/campgrounds/:id', validateCampground, catchAsync(async (req, res) => {
   const { id } = req.params;
   const campground = await Campground.findByIdAndUpdate(id, {...req.body}, {useFindAndModify: false}) // pass in the id and then spread the req.body object into the new object
   res.redirect(`/campgrounds/${campground._id}`)
@@ -108,7 +106,6 @@ app.all('*', (req, res, next) => {
 app.use((err, req, res, next) => {
   const { statusCode = 500 } = err;
   if (!err.message) err.message = 'Oh No, Something Went Wrong!';
-  console.log(err)
   res.status(statusCode).render('error', { err }); // passing in the entire error
 })
 
