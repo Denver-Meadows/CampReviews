@@ -3,8 +3,6 @@ const app = express();
 const path = require('path');
 const port = 3000;
 
-// Joi is used for validating data.  We are defining a schema below in the new campground route
-const Joi = require('joi');
 // Destructuring here, we can call campgroundSchema below in the validate function.
 const { campgroundSchema } = require('./schemas.js')
 

@@ -1,8 +1,16 @@
-All routes have been setup and are working.
+Express, Mongo and Node are all setup and working.
+All REST routes have been setup and are working.
+Basic styling has been added.
 
-Errors:   To handle errors we implemented a utilities file which has the catchAsync and ExpressError files.
+Errors:   
+To handle errors we implemented a utilities file which has the catchAsync and ExpressError files.
 Review the files in the Express_Errors_CODE for a refresh on how these 2 error handling techinques work.
+We catch any errors and pass them to the next() error handler to be resolved.
+These steps required the app.all call and app.use(primary error handling) call.
+
+Validation:
 We used bootstrap features to implement user side validation on the forms.  Forms will not allow to submit until
 filled out and turn green and red to indicate what needs to happen.
 For the server side validation, we are using Joi.  With Joi we can create a Schema and validate prior to mongoose
 handling and trying to send to the db.  We created a function that we can run as middleware.
+The validateCampground middleware will confirm validations and throw an error if something is wrong. 
