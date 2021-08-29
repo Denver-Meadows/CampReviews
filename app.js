@@ -3,6 +3,9 @@ const app = express();
 const path = require('path');
 const port = 3000;
 
+// Joi is used for validating data.  We are defining a schema below in the new campground route
+const Joi = require('joi');
+
 // Importing catchAsync
 const catchAsync = require('./utilities/catchAsync');
 const ExpressError = require('./utilities/ExpressError');
@@ -49,9 +52,22 @@ app.get('/campgrounds/new', (req, res) => {
 
 // 2nd Part of Create (posting data from form)
 app.post('/campgrounds', catchAsync(async (req, res, next) => {
-    const campground = new Campground(req.body)
-    await campground.save();
-    res.redirect(`campgrounds/${campground._id}`)
+  // this is not a mongoose schema, this will validate our data before we attempt to save with mongoose
+  const campgroundSchema = Joi.object({
+    title: Joi.string().required(),
+    price: Joi.number().required().min(0),
+  });
+
+  // Saving the result of the validation and passing an error if something is wrong
+  const result = campgroundSchema.validate(req.body)
+  if (result.error) { 
+    const msg = result.error.details.map(el => el.message).join(', ')
+    throw new ExpressError(msg, 400)
+  }
+
+  const campground = new Campground(req.body)
+  await campground.save();
+  res.redirect(`campgrounds/${campground._id}`)
 }))
 
 // Show
