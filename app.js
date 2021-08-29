@@ -3,6 +3,9 @@ const app = express();
 const path = require('path');
 const port = 3000;
 
+// Importing catchAsync
+const catchAsync = require('./utilities/catchAsync');
+
 // ejs-mate is an add-on for ejs that helps make designing views easy.  We can create a boilerplate that is shared across all pages.
 const ejsMate = require('ejs-mate')
 const methodOverride = require('method-override');
@@ -33,10 +36,10 @@ app.get('/', (req, res) => {
 });
 
 // Index
-app.get('/campgrounds', async (req, res) => {
+app.get('/campgrounds', catchAsync(async (req, res) => {
   const campgrounds = await Campground.find({})
   res.render('campgrounds/index', { campgrounds })
-})
+}))
 
 // Create
 app.get('/campgrounds/new', (req, res) => {
@@ -44,34 +47,30 @@ app.get('/campgrounds/new', (req, res) => {
 })
 
 // 2nd Part of Create (posting data from form)
-app.post('/campgrounds', async (req, res, next) => {
-  try {
+app.post('/campgrounds', catchAsync(async (req, res, next) => {
     const campground = new Campground(req.body)
     await campground.save();
     res.redirect(`campgrounds/${campground._id}`)
-  } catch (err) {
-    next(err)
-  }
-})
+}))
 
 // Show
-app.get('/campgrounds/:id', async (req, res) => {
+app.get('/campgrounds/:id', catchAsync(async (req, res) => {
   const campground = await Campground.findById(req.params.id)
   res.render('campgrounds/show', { campground })
-})
+}));
 
 // Edit
-app.get('/campgrounds/:id/edit', async (req, res) => {
+app.get('/campgrounds/:id/edit', catchAsync(async (req, res) => {
   const campground = await Campground.findById(req.params.id)
   res.render(`campgrounds/edit`, { campground })
-})
+}));
 
 // Delete
-app.delete('/campgrounds/:id', async (req, res) => {
+app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
   const { id } = req.params;
   const campground = await Campground.findByIdAndDelete(id)
   res.redirect('/campgrounds')
-})
+}))
 
 // Put for 2nd part of edit
 app.put('/campgrounds/:id', async (req, res) => {
