@@ -56,6 +56,9 @@ app.post('/campgrounds', catchAsync(async (req, res, next) => {
   const campgroundSchema = Joi.object({
     title: Joi.string().required(),
     price: Joi.number().required().min(0),
+    location: Joi.string().required(),
+    image: Joi.string(),
+    description: Joi.string().required(),
   });
 
   // Saving the result of the validation and passing an error if something is wrong
