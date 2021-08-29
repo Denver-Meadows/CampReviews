@@ -5,6 +5,7 @@ const port = 3000;
 
 // Importing catchAsync
 const catchAsync = require('./utilities/catchAsync');
+const ExpressError = require('./utilities/ExpressError');
 
 // ejs-mate is an add-on for ejs that helps make designing views easy.  We can create a boilerplate that is shared across all pages.
 const ejsMate = require('ejs-mate')
@@ -73,15 +74,23 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
 }))
 
 // Put for 2nd part of edit
-app.put('/campgrounds/:id', async (req, res) => {
+app.put('/campgrounds/:id', catchAsync(async (req, res) => {
   const { id } = req.params;
   const campground = await Campground.findByIdAndUpdate(id, {...req.body}, {useFindAndModify: false}) // pass in the id and then spread the req.body object into the new object
   res.redirect(`/campgrounds/${campground._id}`)
+}))
+
+// Using all for all types of requests and * for all paths, if not found send 404 alert
+app.all('*', (req, res, next) => {
+  next(new ExpressError('Page Not Found', 404))
 })
 
 // basic error handling
 app.use((err, req, res, next) => {
-  res.send('somthing went wrooooooonnnnnG')
+  const { statusCode = 500 } = err;
+  if (!err.message) err.message = 'Oh No, Something Went Wrong!';
+  console.log(err)
+  res.status(statusCode).render('error', { err }); // passing in the entire error
 })
 
 app.listen(port, () => {
