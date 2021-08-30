@@ -22,11 +22,6 @@ mongoose.connect('mongodb://localhost:27017/camp-review', {
   useCreateIndex: true
 });
 
-// Mongoose Connection error handling
-mongoose.connection.on("error", console.error.bind(console, "connection error:"));
-mongoose.connection.once("open", () => {
-  console.log("Database connected");
-});
 
 // Creating a middleware function to validate with Joi.
 const validateCampground = (req, res, next) => {
