@@ -26,7 +26,7 @@ const CampgroundSchema = new Schema({
   reviews: [
     {
       type: mongoose.Schema.Types.ObjectId, // this is an ObjectID
-      ref: "Review", // ObjectID from ref model
+      ref: "Review", // The reference model
     }
   ],
 });

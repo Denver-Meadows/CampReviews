@@ -16,4 +16,5 @@ handling and trying to send to the db.  We created a function that we can run as
 The validateCampground middleware will confirm validations and throw an error if something is wrong. 
 
 Review Model Implementation:
-Built the reivew schema and added an array of ObjectId's to the campground model.
+We need to build a model for our Reviews so we can store this data in the DB.
+Built the reivew schema and added an array of ObjectId's to the campground model so we can link reviews to a campground.
