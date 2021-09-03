@@ -4,7 +4,7 @@ const path = require('path');
 const port = 3000;
 
 // Destructuring here, we can call campgroundSchema below in the validate function.
-const { campgroundSchema } = require('./schemas.js')
+const { campgroundSchema, reviewSchema } = require('./schemas.js');
 
 // Importing catchAsync
 const catchAsync = require('./utilities/catchAsync');
@@ -31,7 +31,7 @@ mongoose.connection.once("open", () => {
   console.log("Database connected");
 });
 
-// Creating a middleware function to validate with Joi.
+// Creating a middleware function to validate Campground with Joi.
 const validateCampground = (req, res, next) => {
     // Saving the result of the validation and passing an error if something is wrong
     const result = campgroundSchema.validate(req.body)
@@ -41,6 +41,17 @@ const validateCampground = (req, res, next) => {
     } else {
       next()
     }
+};
+
+// Creating middleware function to validate Review with Joi.
+const validateReview = (req, res, next) => {
+  const result = reviewSchema.validate(req.body)
+  if (result.error) {
+    const msg = result.error.details.map(el => el.message).join(', ')
+    throw new ExpressError(msg, 400)
+  } else {
+    next()
+  }
 }
 
 app.set('view engine', 'ejs');
@@ -99,7 +110,7 @@ app.put('/campgrounds/:id', validateCampground, catchAsync(async (req, res) => {
 }))
 
 // Create reviews
-app.post('/campgrounds/:id/reviews', catchAsync(async(req, res) => {
+app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async(req, res) => {
   const campground = await Campground.findById(req.params.id); // Find corresponding campground for this review
   const review = new Review(req.body) // Using the Review model to create a new review by passing in the body of the form
   campground.reviews.push(review); // We got the campground above, now we can push this new review into the "Reviews" array which all campgrounds have
