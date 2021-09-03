@@ -23,14 +23,15 @@
             </div>
         </div>
         <h2>Leave A Review</h2>
-        <form action="" class="mb-3">
+        <%# the action should hit the route we created %> 
+        <form action="/campgrounds/<%=campground._id%>/reviews" method="POST" class="mb-3 validated-form" novalidate>
           <div class="mb-3">
             <label class="form-label" for="rating">Rating</label>
             <input class="form-range" type="range" min="1" max="5" name="rating" id="rating">
           </div>
           <div class="mb-3">
             <label class="form-label" for="body">Review</label>
-            <textarea class="form-control" name="body" id="body" cols="30" rows="3"></textarea>
+            <textarea class="form-control" name="body" id="body" cols="30" rows="3" required ></textarea>
           </div>
           <button class="btn btn-success">Submit</button>
         </form>

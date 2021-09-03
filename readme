@@ -18,3 +18,5 @@ The validateCampground middleware will confirm validations and throw an error if
 Review Model Implementation:
 We need to build a model for our Reviews so we can store this data in the DB.
 Built the reivew schema and added an array of ObjectId's to the campground model so we can link reviews to a campground.
+See notes in the app.post('/campgrounds/:id/reviews', catchAsync(async(req, res) route on finalizing this build.
+Used bootstrap for UI validation and Joi and server side validation
