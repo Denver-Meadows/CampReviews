@@ -20,3 +20,6 @@ We need to build a model for our Reviews so we can store this data in the DB.
 Built the reivew schema and added an array of ObjectId's to the campground model so we can link reviews to a campground.
 See notes in the app.post('/campgrounds/:id/reviews', catchAsync(async(req, res) route on finalizing this build.
 Used bootstrap for UI validation and Joi for server-side validation.
+Made it so we can delete comments.
+Now if a campground is deleted, we need to delete all reviews associated with it which requires Mongoose middleware.
+ We implement this middleware with the campground schema file.  
