@@ -86,7 +86,6 @@ app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) =
 // Show
 app.get('/campgrounds/:id', catchAsync(async (req, res) => {
   const campground = await Campground.findById(req.params.id).populate('reviews')  // need to populate in order for the reviews to show the detail instaed of an ObjectId
-  console.log(campground)
   res.render('campgrounds/show', { campground })
 }));
 
@@ -118,8 +117,18 @@ app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async(req, res) 
   await review.save(); // save the review -- This can be done in a parallel way with the campground review below.
   await campground.save();
   res.redirect(`/campgrounds/${campground._id}`); // redirect back to the campground show page
-
 }))
+
+// Delete reviews
+// For this route, we will need the campground id and then the review id so we can delete the review from that campground on the db
+// Will need a delete form on the show page
+app.delete('/campgrounds/:id/reviews/:reviewId', catchAsync(async(req, res) => {
+  const { id, reviewId } = req.params
+  // Pull operator in mongoose removes from an existing array all instatnces of a value that match a specified condition
+  await Campground.findByIdAndUpdate(id, { $pull: {reviews: reviewId} }); // we find the campground by the id and then "pull" the reviewId from the reviews
+  await Review.findByIdAndDelete(req.params.reviewId); // Also delete the review from the reviews db
+  res.redirect(`/campgrounds/${id}`); // send back to campground show page
+}));
 
 // Using all for all types of requests and * for all paths, if not found send 404 alert
 app.all('*', (req, res, next) => {
