@@ -24,6 +24,7 @@ router.post('/', validateReview, catchAsync(async(req, res) => {
   campground.reviews.push(review); // We got the campground above, now we can push this new review into the "Reviews" array which all campgrounds have
   await review.save(); // save the review -- This can be done in a parallel way with the campground review below.
   await campground.save();
+  req.flash('success', 'Created new review!')
   res.redirect(`/campgrounds/${campground._id}`); // redirect back to the campground show page
 }))
 
@@ -35,6 +36,7 @@ router.delete('/:reviewId', catchAsync(async(req, res) => {
   // Pull operator in mongoose removes from an existing array all instatnces of a value that match a specified condition
   await Campground.findByIdAndUpdate(id, { $pull: {reviews: reviewId} }); // we find the campground by the id and then "pull" the reviewId from the reviews
   await Review.findByIdAndDelete(req.params.reviewId); // Also delete the review from the reviews db
+  req.flash('success', 'Successfully deleted review!')
   res.redirect(`/campgrounds/${id}`); // send back to campground show page
 }));
 

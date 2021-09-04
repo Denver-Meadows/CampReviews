@@ -46,3 +46,6 @@ Added a req.flash to our new campground
 Before any route handlers in app.js, we setup middleware to pass in the flash msg and make it available on all routes/requests
 Now that 'success' is available on all routes, we passed in success to our boilerplate to display it.
 Basic setup complete.
+Used bootstrap to create flash success and errors partials.
+Added some bootstrap styling to the message.
+Then added messages where needed in the app -- 
