@@ -18,7 +18,8 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/camp-review', {
   useNewUrlParser: true, 
   useUnifiedTopology: true,
-  useCreateIndex: true
+  useCreateIndex: true,
+  useFindAndModify: false,
 });
 
 // Mongoose Connection error handling
@@ -33,6 +34,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.engine('ejs', ejsMate); // Tell the app we are using ejsMate as the engine that runs, parse's and basically makes sense of EJS instead of the default. With this we can define a layout file.
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method')) // pass in query string we want to use
+app.use(express.static(path.join(__dirname, 'public')))
 
 // Init routes
 app.use('/campgrounds', campgrounds)
