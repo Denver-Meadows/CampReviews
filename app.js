@@ -6,9 +6,6 @@ const port = 3000;
 const campgrounds = require('./routes/campground'); // Require routes (will need to add the app.use below to init)
 const reviews = require('./routes/reviews');
 
-// Destructuring here, we can call campgroundSchema below in the validate function.
-const { campgroundSchema, reviewSchema } = require('./schemas.js');
-
 // Importing catchAsync
 const catchAsync = require('./utilities/catchAsync');
 const ExpressError = require('./utilities/ExpressError');
@@ -16,10 +13,6 @@ const ExpressError = require('./utilities/ExpressError');
 // ejs-mate is an add-on for ejs that helps make designing views easy.  We can create a boilerplate that is shared across all pages.
 const ejsMate = require('ejs-mate')
 const methodOverride = require('method-override');
-
-// import models
-const Campground = require('./models/campground'); 
-const Review = require('./models/review');
 
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/camp-review', {
@@ -41,13 +34,13 @@ app.engine('ejs', ejsMate); // Tell the app we are using ejsMate as the engine t
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method')) // pass in query string we want to use
 
-app.get('/', (req, res) => {
-  res.render('home')
-});
-
 // Init routes
 app.use('/campgrounds', campgrounds)
 app.use('/campgrounds/:id/reviews', reviews)
+
+app.get('/', (req, res) => {
+  res.render('home')
+});
 
 // Using all for all types of requests and * for all paths, if not found send 404 alert
 app.all('*', (req, res, next) => {

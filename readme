@@ -25,3 +25,6 @@ Now if a campground is deleted, we need to delete all reviews associated with it
  We implement this middleware with the campground schema file. 
 
 Express Router:
+Refactored all routes with express.Router.  We needed to pass in an option of mergeParams in order to have access to req.params.
+mergeParams is needed because of the way Router handles Params.
+
