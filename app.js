@@ -3,6 +3,8 @@ const app = express();
 const path = require('path');
 const port = 3000;
 
+const campgrounds = require('./routes/campground'); // Require routes (will need to add the app.use below to init)
+
 // Destructuring here, we can call campgroundSchema below in the validate function.
 const { campgroundSchema, reviewSchema } = require('./schemas.js');
 
@@ -31,17 +33,6 @@ mongoose.connection.once("open", () => {
   console.log("Database connected");
 });
 
-// Creating a middleware function to validate Campground with Joi.
-const validateCampground = (req, res, next) => {
-    // Saving the result of the validation and passing an error if something is wrong
-    const result = campgroundSchema.validate(req.body)
-    if (result.error) { 
-      const msg = result.error.details.map(el => el.message).join(', ')
-      throw new ExpressError(msg, 400)
-    } else {
-      next()
-    }
-};
 
 // Creating middleware function to validate Review with Joi.
 const validateReview = (req, res, next) => {
@@ -65,49 +56,9 @@ app.get('/', (req, res) => {
   res.render('home')
 });
 
-// Index
-app.get('/campgrounds', catchAsync(async (req, res) => {
-  const campgrounds = await Campground.find({})
-  res.render('campgrounds/index', { campgrounds })
-}))
+// Init routes
+app.use('/campgrounds', campgrounds)
 
-// Create
-app.get('/campgrounds/new', (req, res) => {
-  res.render('campgrounds/new')
-})
-
-// 2nd Part of Create (posting data from form)
-app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) => {
-  const campground = new Campground(req.body)
-  await campground.save();
-  res.redirect(`campgrounds/${campground._id}`)
-}))
-
-// Show
-app.get('/campgrounds/:id', catchAsync(async (req, res) => {
-  const campground = await Campground.findById(req.params.id).populate('reviews')  // need to populate in order for the reviews to show the detail instaed of an ObjectId
-  res.render('campgrounds/show', { campground })
-}));
-
-// Edit
-app.get('/campgrounds/:id/edit', catchAsync(async (req, res) => {
-  const campground = await Campground.findById(req.params.id)
-  res.render(`campgrounds/edit`, { campground })
-}));
-
-// Delete 2 
-app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const campground = await Campground.findByIdAndDelete(id)
-  res.redirect('/campgrounds')
-}))
-
-// Put for 2nd part of edit 
-app.put('/campgrounds/:id', validateCampground, catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const campground = await Campground.findByIdAndUpdate(id, {...req.body}, {useFindAndModify: false}) // pass in the id and then spread the req.body object into the new object
-  res.redirect(`/campgrounds/${campground._id}`)
-}))
 
 // Create reviews
 app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async(req, res) => {

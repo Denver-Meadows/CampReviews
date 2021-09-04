@@ -22,4 +22,6 @@ See notes in the app.post('/campgrounds/:id/reviews', catchAsync(async(req, res)
 Used bootstrap for UI validation and Joi for server-side validation.
 Made it so we can delete comments.
 Now if a campground is deleted, we need to delete all reviews associated with it which requires Mongoose middleware.
- We implement this middleware with the campground schema file.  
+ We implement this middleware with the campground schema file. 
+
+Express Router:
