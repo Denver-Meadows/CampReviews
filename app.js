@@ -6,6 +6,8 @@ const port = 3000;
 const campgrounds = require('./routes/campground'); // Require routes (will need to add the app.use below to init)
 const reviews = require('./routes/reviews');
 
+const session = require('express-session');
+
 // Importing catchAsync
 const catchAsync = require('./utilities/catchAsync');
 const ExpressError = require('./utilities/ExpressError');
@@ -34,7 +36,21 @@ app.set('views', path.join(__dirname, 'views'));
 app.engine('ejs', ejsMate); // Tell the app we are using ejsMate as the engine that runs, parse's and basically makes sense of EJS instead of the default. With this we can define a layout file.
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method')) // pass in query string we want to use
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Configuring session
+const sessionConfig = {
+  secret: 'willNeedToUpdateThisSecretForProduction',
+  resave: false,
+  saveUninitialized: true,
+  // We can add some additional options for the cookie
+  cookie: {
+    httpOnly: true, // helps with security
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // expires in a week.  Date.now is in milliseconds so we need the match to convert
+    maxAge: 1000 * 60 * 60 * 24 * 7, // maxAge is a week
+  }
+};
+app.use(session(sessionConfig))
 
 // Init routes
 app.use('/campgrounds', campgrounds)

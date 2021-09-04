@@ -28,10 +28,14 @@ Express Router:
 Refactored all routes with express.Router.  We needed to pass in an option of mergeParams in order to have access to req.params.
 mergeParams is needed because of the way Router handles Params.
 
-Static Assets
+Static Assets:
 We need to setup a public dir for our static assets.  
 We also need to tell express to serve our public dir which we did with app.use(static)
 We created separate dirs for js and styles.
 Our first file we created was the validateForms.js file in our js dir.  
 We put the code from bootstrap that validates the forms and then pass that script to our boilerplate.
-We also updated the path on the app.use(static) to include path.join
+We also updated the path on the app.use(static) to include path.join.
+
+Session:
+Installed and required express-session
+Used some basic config with session in app.index
