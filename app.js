@@ -7,6 +7,7 @@ const campgrounds = require('./routes/campground'); // Require routes (will need
 const reviews = require('./routes/reviews');
 
 const session = require('express-session');
+const flash = require('connect-flash');
 
 // Importing catchAsync
 const catchAsync = require('./utilities/catchAsync');
@@ -51,6 +52,14 @@ const sessionConfig = {
   }
 };
 app.use(session(sessionConfig))
+app.use(flash());
+
+// middleware for flash
+app.use((req, res, next) => {
+  res.locals.success = req.flash('success'); // with this, we'll have access to 'success' variable on all requests.
+  res.locals.error = req.flash('error');
+  next();
+})
 
 // Init routes
 app.use('/campgrounds', campgrounds)
