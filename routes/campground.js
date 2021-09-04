@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utilities/catchAsync');
-const Campground = require('../models/campground'); 
+const Campground = require('../models/campground'); // import models
 const ExpressError = require('../utilities/ExpressError');
-const { campgroundSchema } = require('../schemas.js');
+const { campgroundSchema } = require('../schemas.js'); // Destructuring here, we can call campgroundSchema below in the validate function.
 
 // Creating a middleware function to validate Campground with Joi.
 const validateCampground = (req, res, next) => {

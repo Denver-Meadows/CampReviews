@@ -4,6 +4,7 @@ const path = require('path');
 const port = 3000;
 
 const campgrounds = require('./routes/campground'); // Require routes (will need to add the app.use below to init)
+const reviews = require('./routes/reviews');
 
 // Destructuring here, we can call campgroundSchema below in the validate function.
 const { campgroundSchema, reviewSchema } = require('./schemas.js');
@@ -33,18 +34,6 @@ mongoose.connection.once("open", () => {
   console.log("Database connected");
 });
 
-
-// Creating middleware function to validate Review with Joi.
-const validateReview = (req, res, next) => {
-  const result = reviewSchema.validate(req.body)
-  if (result.error) {
-    const msg = result.error.details.map(el => el.message).join(', ')
-    throw new ExpressError(msg, 400)
-  } else {
-    next()
-  }
-}
-
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -58,28 +47,7 @@ app.get('/', (req, res) => {
 
 // Init routes
 app.use('/campgrounds', campgrounds)
-
-
-// Create reviews
-app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async(req, res) => {
-  const campground = await Campground.findById(req.params.id); // Find corresponding campground for this review
-  const review = new Review(req.body) // Using the Review model to create a new review by passing in the body of the form
-  campground.reviews.push(review); // We got the campground above, now we can push this new review into the "Reviews" array which all campgrounds have
-  await review.save(); // save the review -- This can be done in a parallel way with the campground review below.
-  await campground.save();
-  res.redirect(`/campgrounds/${campground._id}`); // redirect back to the campground show page
-}))
-
-// Delete reviews
-// For this route, we will need the campground id and then the review id so we can delete the review from that campground on the db
-// Will need a delete form on the show page
-app.delete('/campgrounds/:id/reviews/:reviewId', catchAsync(async(req, res) => {
-  const { id, reviewId } = req.params
-  // Pull operator in mongoose removes from an existing array all instatnces of a value that match a specified condition
-  await Campground.findByIdAndUpdate(id, { $pull: {reviews: reviewId} }); // we find the campground by the id and then "pull" the reviewId from the reviews
-  await Review.findByIdAndDelete(req.params.reviewId); // Also delete the review from the reviews db
-  res.redirect(`/campgrounds/${id}`); // send back to campground show page
-}));
+app.use('/campgrounds/:id/reviews', reviews)
 
 // Using all for all types of requests and * for all paths, if not found send 404 alert
 app.all('*', (req, res, next) => {
