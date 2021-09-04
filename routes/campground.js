@@ -39,6 +39,11 @@ router.post('/', validateCampground, catchAsync(async (req, res, next) => {
 // Show
 router.get('/:id', catchAsync(async (req, res) => {
   const campground = await Campground.findById(req.params.id).populate('reviews')  // need to populate in order for the reviews to show the detail instaed of an ObjectId
+  // If we can't find a campground, flash the error and redirect.
+  if (!campground) {
+    req.flash('error', 'Cannot find that Campground!');
+    return res.redirect('/campgrounds');
+  }
   res.render('campgrounds/show', { campground })
 }));
 
