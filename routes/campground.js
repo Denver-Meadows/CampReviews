@@ -5,17 +5,7 @@ const Campground = require('../models/campground'); // import models
 const ExpressError = require('../utilities/ExpressError');
 const { campgroundSchema } = require('../schemas.js'); // Destructuring here, we can call campgroundSchema below in the validate function.
 
-// Creating a middleware function to validate Campground with Joi.
-const validateCampground = (req, res, next) => {
-  // Saving the result of the validation and passing an error if something is wrong
-  const result = campgroundSchema.validate(req.body)
-  if (result.error) { 
-    const msg = result.error.details.map(el => el.message).join(', ')
-    throw new ExpressError(msg, 400)
-  } else {
-    next()
-  }
-};
+
 
 // Index
 router.get('/', catchAsync(async (req, res) => {
