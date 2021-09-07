@@ -48,4 +48,9 @@ Now that 'success' is available on all routes, we passed in success to our boile
 Basic setup complete.
 Used bootstrap to create flash success and errors partials.
 Added some bootstrap styling to the message.
-Then added messages where needed in the app -- 
+Then added Flash messages where needed in the app 
+
+Authentication:
+We are using passport to implement Authentication into our app. 
+Passport has many different logins (twitter, facebook, etc).  We are going to use passport-local.
+There is also passport for mongoose.  We are going to install passport, passport-local and passport-local-mongoose.
