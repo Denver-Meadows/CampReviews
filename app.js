@@ -5,8 +5,10 @@ const port = 3000;
 
 const User = require('./models/user') // importing User Model
 
-const campgrounds = require('./routes/campground'); // Require routes (will need to add the app.use below to init)
-const reviews = require('./routes/reviews');
+const campgroundRoutes = require('./routes/campground'); // Require routes (will need to add the app.use below to init)
+const reviewRoutes = require('./routes/reviews');
+const userRoutes = require('./routes/user')
+
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
@@ -77,13 +79,9 @@ app.use((req, res, next) => {
 })
 
 // Init routes
-app.use('/campgrounds', campgrounds)
-app.use('/campgrounds/:id/reviews', reviews)
-
-// Route to create new user
-// The register method will register a new user with a given pw.  Checks if username is unique.
-// It will handle all of the hashing and salt with the pw it stores. 
-
+app.use('/campgrounds', campgroundRoutes)
+app.use('/campgrounds/:id/reviews', reviewRoutes)
+app.use('/register', userRoutes)
 
 app.get('/', (req, res) => {
   res.render('home')

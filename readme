@@ -56,3 +56,4 @@ Passport has many different logins (twitter, facebook, etc).  We are going to us
 There is also passport for mongoose.  We are going to install passport, passport-local and passport-local-mongoose.
 Created the user model with passport.
 Required passport and passport local in main app file -- added all the methods needed for passport Authentication.
+Create routes for new users
