@@ -3,11 +3,14 @@ const app = express();
 const path = require('path');
 const port = 3000;
 
+const User = require('./models/user') // importing User Model
+
 const campgrounds = require('./routes/campground'); // Require routes (will need to add the app.use below to init)
 const reviews = require('./routes/reviews');
-
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+const passportLocal = require('passport-local');
 
 // Importing catchAsync
 const catchAsync = require('./utilities/catchAsync');
@@ -34,11 +37,6 @@ mongoose.connection.once("open", () => {
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-app.engine('ejs', ejsMate); // Tell the app we are using ejsMate as the engine that runs, parse's and basically makes sense of EJS instead of the default. With this we can define a layout file.
-app.use(express.urlencoded({extended: true}));
-app.use(methodOverride('_method')) // pass in query string we want to use
-app.use(express.static(path.join(__dirname, 'public')));
-
 // Configuring session
 const sessionConfig = {
   secret: 'willNeedToUpdateThisSecretForProduction',
@@ -53,6 +51,23 @@ const sessionConfig = {
 };
 app.use(session(sessionConfig))
 app.use(flash());
+
+app.engine('ejs', ejsMate); // Tell the app we are using ejsMate as the engine that runs, parse's and basically makes sense of EJS instead of the default. With this we can define a layout file.
+app.use(express.urlencoded({extended: true}));
+app.use(methodOverride('_method')) // pass in query string we want to use
+app.use(express.static(path.join(__dirname, 'public')));
+
+// PASSPORT
+app.use(passport.initialize()); 
+app.use(passport.session()); // Needed if we want persisent login with passport.  Must be used AFTER session
+// Now we must tell passport to use the passportLocal we required and for that passportLocal, the authentication method will be on the User model.
+// authenticate is a method from created by passport.
+passport.use(new passportLocal(User.authenticate()));
+
+// Tells passport how we serialize a User -- which is how we store the user in the session.
+// Again - these methods are created by passport.
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser()); // opposite of above.  How to remove the user from the session.
 
 // middleware for flash
 app.use((req, res, next) => {
