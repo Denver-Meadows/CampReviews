@@ -80,6 +80,11 @@ app.use((req, res, next) => {
 app.use('/campgrounds', campgrounds)
 app.use('/campgrounds/:id/reviews', reviews)
 
+// Route to create new user
+// The register method will register a new user with a given pw.  Checks if username is unique.
+// It will handle all of the hashing and salt with the pw it stores. 
+
+
 app.get('/', (req, res) => {
   res.render('home')
 });
