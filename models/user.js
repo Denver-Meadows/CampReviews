@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
 
 const UserSchema = new mongoose.Schema ({
-  eamil: {
+  email: {
     type: String,
     required: true,
     unique: true,
