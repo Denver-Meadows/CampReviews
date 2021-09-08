@@ -56,5 +56,9 @@ Passport has many different logins (twitter, facebook, etc).  We are going to us
 There is also passport for mongoose.  We are going to install passport, passport-local and passport-local-mongoose.
 Created the user model with passport.
 Required passport and passport local in main app file -- added all the methods needed for passport Authentication.
-Create routes for new users
-Create routes for logging in
+Created routes for new users
+Created routes for logging in
+
+Checking if logged in and allowing access:
+Passport also gives us access to a method called "isAuthenticated" on the req which will check if a user is logged in.
+Then we created a middleware dir and added this middleware in there so we could use whereever we want to check if logged in.

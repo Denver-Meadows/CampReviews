@@ -4,6 +4,7 @@ const catchAsync = require('../utilities/catchAsync');
 const Campground = require('../models/campground'); // import models
 const ExpressError = require('../utilities/ExpressError');
 const { campgroundSchema } = require('../schemas.js'); // Destructuring here, we can call campgroundSchema below in the validate function.
+const isLoggedIn = require('../middleware/middleware')
 
 // Creating a middleware function to validate Campground with Joi.
 const validateCampground = (req, res, next) => {
@@ -24,7 +25,7 @@ router.get('/', catchAsync(async (req, res) => {
 }))
 
 // Create
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
   res.render('campgrounds/new')
 })
 
