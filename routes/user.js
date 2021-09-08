@@ -40,5 +40,12 @@ router.post('/login', passport.authenticate('local', {failureFlash: true, failur
   res.redirect('/campgrounds')
 })
 
+// route to logout.  Passport gives us access to a logout method on the req object, which logs out the user.
+router.get('/logout', (req, res) => {
+  req.logOut();
+  req.flash('success', 'You have logged out.')
+  res.redirect('/campgrounds')
+})
+
 
 module.exports = router;
