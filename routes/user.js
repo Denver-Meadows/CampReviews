@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utilities/catchAsync');
 const ExpressError = require('../utilities/ExpressError');
-const User = require('../models/user')
+const User = require('../models/user');
+const passport = require('passport');
 
 // Route to create new user (render form)
 
@@ -27,7 +28,17 @@ router.post('/register', catchAsync(async (req, res) => {
 }));
 
 // routes for loggin in
-// router.get('')
+router.get('/login', (req, res) => {
+  res.render('users/login')
+});
+
+// Post route for login.  
+// Passport gives us additional middleware we can use to authenticate. This methods requires the strategy and options we can specify.
+// The options will flash a message a failure and redirect to login
+router.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), (req, res) => {
+  req.flash('success', 'Welcome back!');
+  res.redirect('/campgrounds')
+})
 
 
 module.exports = router;

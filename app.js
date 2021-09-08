@@ -12,7 +12,7 @@ const userRoutes = require('./routes/user')
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
-const passportLocal = require('passport-local');
+const passportStrategy = require('passport-local');
 
 // Importing catchAsync
 const catchAsync = require('./utilities/catchAsync');
@@ -62,9 +62,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 // PASSPORT
 app.use(passport.initialize()); 
 app.use(passport.session()); // Needed if we want persisent login with passport.  Must be used AFTER session
-// Now we must tell passport to use the passportLocal we required and for that passportLocal, the authentication method will be on the User model.
+// Now we must tell passport to use the passportStrategy we required and for that passportStrategy, the authentication method will be on the User model.
 // authenticate is a method from created by passport.
-passport.use(new passportLocal(User.authenticate()));
+passport.use(new passportStrategy(User.authenticate()));
 
 // Tells passport how we serialize a User -- which is how we store the user in the session.
 // Again - these methods are created by passport.
