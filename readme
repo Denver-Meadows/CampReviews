@@ -57,3 +57,4 @@ There is also passport for mongoose.  We are going to install passport, passport
 Created the user model with passport.
 Required passport and passport local in main app file -- added all the methods needed for passport Authentication.
 Create routes for new users
+Create routes for logging in
