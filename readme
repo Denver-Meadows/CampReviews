@@ -62,3 +62,8 @@ Created routes for logging in
 Checking if logged in and allowing access:
 Passport also gives us access to a method called "isAuthenticated" on the req which will check if a user is logged in.
 Then we created a middleware dir and added this middleware in there so we could use whereever we want to check if logged in.
+
+Show and hide links (login, register, logout) based on if someone is logged in or not.
+Passport adds a method called 'user' on the req object.  Thanks to session, we have the user info for that session on the req.user.
+In the app.js, we are added middleware to the flash middleware which sets the currentUser to req.user.
+Then with ejs, we check if there is a currentUser to display (login, register, logout)

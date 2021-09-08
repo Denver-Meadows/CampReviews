@@ -73,6 +73,7 @@ passport.deserializeUser(User.deserializeUser()); // opposite of above.  How to 
 
 // middleware for flash
 app.use((req, res, next) => {
+  res.locals.currentUser = req.user // added later with password
   res.locals.success = req.flash('success'); // with this, we'll have access to 'success' variable on all requests.
   res.locals.error = req.flash('error');
   next();
