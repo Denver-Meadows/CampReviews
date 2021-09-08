@@ -41,7 +41,10 @@ router.get('/login', (req, res) => {
 // The options will flash a message a failure and redirect to login
 router.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), (req, res) => {
   req.flash('success', 'Welcome back!');
-  res.redirect('/campgrounds')
+  // We want to redirect to where the user was trying to go to.
+  const redirectUrl = req.session.returnTo || '/campgrounds';
+  delete req.session.returnTo; // deletes any reminants of the returnTo object on the session
+  res.redirect(redirectUrl)
 })
 
 // route to logout.  Passport gives us access to a logout method on the req object, which logs out the user.
