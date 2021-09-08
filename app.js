@@ -79,9 +79,10 @@ app.use((req, res, next) => {
 })
 
 // Init routes
+app.use('/', userRoutes)
 app.use('/campgrounds', campgroundRoutes)
 app.use('/campgrounds/:id/reviews', reviewRoutes)
-app.use('/register', userRoutes)
+
 
 app.get('/', (req, res) => {
   res.render('home')
