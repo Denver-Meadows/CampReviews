@@ -72,4 +72,5 @@ AUTHORIZATION:
 Adding an author to a campground.
 Add a field to each campground model that has the userId.  
 When you save a campground, we will take the current userId (whatever is saved in req.User) and save that on the campground.
-THen we can look the user up on each campground.
+Then we can assign a user to a campground and display it.
+
