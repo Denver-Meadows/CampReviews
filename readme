@@ -71,6 +71,12 @@ Then with ejs, we check if there is a currentUser to display (login, register, l
 AUTHORIZATION:
 Adding an author to a campground.
 Add a field to each campground model that has the userId.  
-When you save a campground, we will take the current userId (whatever is saved in req.User) and save that on the campground.
+When you save a campground, we will take the current userId (whatever is saved in req.User session) and save that on the campground.
 Then we can assign a user to a campground and display it.
 
+Make it so that only the user can see the edit and delete buttons on campgrounds. 
+Since we made currentUser available on all templates in app.js (with app.use).  
+We can use ejs to write the logic to check if there is a user (someone signed in) and if that user is the author.
+We also need to protect these on the backend, in our routes.
+For example, when updating a campground, we need to check if the currentUser is the author.
+Right now we are finding and updating the campground.  Now we need find a campground, check is currentUser = author and then proceed accordingly.

@@ -71,9 +71,9 @@ passport.use(new passportStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser()); // opposite of above.  How to remove the user from the session.
 
-// middleware for flash
+// middleware for flash -- this makes these available on all templates
 app.use((req, res, next) => {
-  res.locals.currentUser = req.user // added later with passport
+  res.locals.currentUser = req.user // added later with passport and makes this available on all ejs files
   res.locals.success = req.flash('success'); // with this, we'll have access to 'success' variable on all requests.
   res.locals.error = req.flash('error');
   next();

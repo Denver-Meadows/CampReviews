@@ -33,7 +33,7 @@ router.get('/new', isLoggedIn, (req, res) => {
 router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res, next) => {
   const campground = new Campground(req.body)
   // Since we are checking if someone is logged in and we have access to req.user thanks to passport, we can take the user_id and save it as the user on the campground
-  campground.author = req.user._id;  // author in our schema is an id, therefore we can set the id to the req.user_id
+  campground.author = req.user._id;  // author in our schema is an objectId, therefore we can set the id to the req.user_id
   await campground.save();
   req.flash('success', 'Successfully made a new campground!')
   res.redirect(`campgrounds/${campground._id}`)
@@ -43,7 +43,6 @@ router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res, nex
 router.get('/:id', catchAsync(async (req, res) => {
   const campground = await Campground.findById(req.params.id).populate('reviews').populate('author')  // need to populate in order for the reviews to show the detail instaed of an ObjectId
   // If we can't find a campground, flash the error and redirect.
-  console.log(campground.author)
   if (!campground) {
     req.flash('error', 'Cannot find that Campground!');
     return res.redirect('/campgrounds');
@@ -68,7 +67,12 @@ router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
 // Put for 2nd part of edit 
 router.put('/:id', isLoggedIn, validateCampground, catchAsync(async (req, res) => {
   const { id } = req.params;
-  const campground = await Campground.findByIdAndUpdate(id, {...req.body}, {useFindAndModify: false}) // pass in the id and then spread the req.body object into the new object
+  // old way of finding an editing prior to auth -- const campground = await Campground.findByIdAndUpdate(id, {...req.body}, {useFindAndModify: false}) // pass in the id and then spread the req.body object into the new object
+  const campground = await Campground.findById(id);
+  if (!campground.author.equals(req.user._id)) {
+    req.flash('error', 'You do not have permission to do that.')
+    return res.redirect(`/campgrounds/${id}`)
+  }
   req.flash('success', 'Successfully updated campground!')
   res.redirect(`/campgrounds/${campground._id}`)
 }))
