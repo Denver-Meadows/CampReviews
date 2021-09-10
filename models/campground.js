@@ -24,6 +24,11 @@ const CampgroundSchema = new Schema({
     type: String,
     required: true,
   },
+  author: {
+    // will be a ref so we need ObjectId so we can reference the other Model in the db. (populate will show this info)
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
   reviews: [
     {
       type: mongoose.Schema.Types.ObjectId, // this is an ObjectID
