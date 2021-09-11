@@ -3,16 +3,18 @@ const router = express.Router( {mergeParams: true }); // In order to get access 
 const catchAsync = require('../utilities/catchAsync');
 const Review = require('../models/review'); // import models
 const Campground = require('../models/campground'); // import models
-const { validateReview } = require('../middleware/middleware');
+const { validateReview, isLoggedIn } = require('../middleware/middleware');
 
 
 // Create reviews
-router.post('/', validateReview, catchAsync(async(req, res) => {
+router.post('/', validateReview, isLoggedIn, catchAsync(async(req, res) => {
   const campground = await Campground.findById(req.params.id); // Find corresponding campground for this review
   const review = new Review(req.body) // Using the Review model to create a new review by passing in the body of the form
+  review.author = req.user._id;
   campground.reviews.push(review); // We got the campground above, now we can push this new review into the "Reviews" array which all campgrounds have
   await review.save(); // save the review -- This can be done in a parallel way with the campground review below.
   await campground.save();
+  console.log(review)
   req.flash('success', 'Created new review!')
   res.redirect(`/campgrounds/${campground._id}`); // redirect back to the campground show page
 }))

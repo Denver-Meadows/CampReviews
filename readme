@@ -80,4 +80,11 @@ We can use ejs to write the logic to check if there is a user (someone signed in
 We also need to protect these on the backend, in our routes.
 For example, when updating a campground, we need to check if the currentUser is the author.
 Right now we are finding and updating the campground.  Now we need find a campground, check is currentUser = author and then proceed accordingly.
-The best way to do that will be with middleware.
+The best way to do that will be with middleware which was added.
+
+Linking reviews to users:
+Add the ref/objectid to the review model.
+Hide the form if you are not logged in.  Use the review template to wrap some ejs to check if logged in.
+That protects the UI, but now we need to protect the route.  
+The post route for creating a review, we can add the isLoggedIn middleware.
+In this route, we can now associate the author of this review to the current req.user (which is coming from isLoggedIn)

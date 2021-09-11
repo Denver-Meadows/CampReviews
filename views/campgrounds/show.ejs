@@ -27,6 +27,8 @@
         </div>
     </div>
     <div class="col-6">
+      <%# Adding ejs to check if a user is logged in then display the form so they can leave a review %> 
+      <% if (currentUser) {%> 
       <h2>Leave A Review</h2>
         <%# the action should hit the route we created %> 
         <form action="/campgrounds/<%=campground._id%>/reviews" method="POST" class="mb-3 validated-form" novalidate>
@@ -40,6 +42,7 @@
           </div>
           <button class="btn btn-success">Submit</button>
         </form>
+        <% } %> 
         <%# Loop over and show the reviews of the campgrounds %> 
         <% for(let review of campground.reviews) { %> 
           <div class="card mb-3">
