@@ -88,3 +88,9 @@ Hide the form if you are not logged in.  Use the review template to wrap some ej
 That protects the UI, but now we need to protect the route.  
 The post route for creating a review, we can add the isLoggedIn middleware.
 In this route, we can now associate the author of this review to the current req.user (which is coming from isLoggedIn)
+
+Display the user name of the review:
+Since we are current populated the reviews when showing the campground. 
+We can use a nested route to populate the author of the review in the campground show route.
+Hide the delete button if not author.
+
