@@ -103,3 +103,8 @@ Refactor all of our routes.
 Another way to restructure routes with Express Router.
 router.route allows us to define a single route which then handles different http request verbs.
 On our main campgrounds '/' route, we can chain on each of the verbs.
+
+Adding in star rating system:
+Using a library called Starability.
+Using the basic star rating system.  Need to take that css and add to our pulic styles.
+Then using the code from their github, added this rating system to our show page.
