@@ -1,73 +1,28 @@
 const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utilities/catchAsync');
-const Campground = require('../models/campground'); // import models
-// const ExpressError = require('../utilities/ExpressError');
-const { isLoggedIn, validateCampground, isAuthor } = require('../middleware/middleware')
+const { isLoggedIn, validateCampground, isAuthor } = require('../middleware/middleware');
+const campgrounds = require('../controllers/campgrounds');
 
 // Index
-router.get('/', catchAsync(async (req, res) => {
-  const campgrounds = await Campground.find({})
-  res.render('campgrounds/index', { campgrounds })
-}))
+router.get('/', catchAsync(campgrounds.index))
 
 // Create
-router.get('/new', isLoggedIn, (req, res) => {
-  res.render('campgrounds/new')
-})
+router.get('/new', isLoggedIn, campgrounds.renderNewForm)
 
 // 2nd Part of Create (posting data from form)
-router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res, next) => {
-  const campground = new Campground(req.body)
-  // Since we are checking if someone is logged in and we have access to req.user thanks to passport, we can take the user_id and save it as the user on the campground
-  campground.author = req.user._id;  // author in our schema is an objectId, therefore we can set the id to the req.user_id
-  await campground.save();
-  req.flash('success', 'Successfully made a new campground!')
-  res.redirect(`campgrounds/${campground._id}`)
-}))
+router.post('/', isLoggedIn, validateCampground, catchAsync(campgrounds.createCampground))
 
 // Show
-router.get('/:id', catchAsync(async (req, res) => {
-  const campground = await Campground.findById(req.params.id).populate({ // nested populate -- populate the reviews, then populate the author of that review
-    path: 'reviews',
-    populate: {
-      path: 'author',
-    }
-  }).populate('author')  // populate the author of the campground.
-  // If we can't find a campground, flash the error and redirect.
-  if (!campground) {
-    req.flash('error', 'Cannot find that Campground!');
-    return res.redirect('/campgrounds');
-  }
-  res.render('campgrounds/show', { campground })
-}));
+router.get('/:id', catchAsync(campgrounds.showCampground));
 
 // Edit
-router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const campground = await Campground.findById(id)
-  if (!campground) {
-    req.flash('error', 'Cannot find that campground!')
-    return res.redirect('/campgrounds')
-  }
-  res.render(`campgrounds/edit`, { campground })
-}));
+router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(campgrounds.renderEditForm));
 
-// Delete 2 
-router.delete('/:id', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
-  const { id } = req.params;
-  await Campground.findByIdAndDelete(id)
-  req.flash('success', 'Successfully deleted campground!')
-  res.redirect('/campgrounds')
-}))
+// Delete
+router.delete('/:id', isLoggedIn, isAuthor, catchAsync(campgrounds.deleteCampground))
 
 // Put for 2nd part of edit -- isLoggenIn gives us access to req.user
-router.put('/:id', isLoggedIn, isAuthor, validateCampground, catchAsync(async (req, res) => {
-  const { id } = req.params;
-  // pass in the id and then spread the req.body object into the new object
-  const campground = await Campground.findByIdAndUpdate(id, { ...req.body })
-  req.flash('success', 'Successfully updated campground!')
-  res.redirect(`/campgrounds/${campground._id}`)
-}))
+router.put('/:id', isLoggedIn, isAuthor, validateCampground, catchAsync(campgrounds.updateCampground))
 
 module.exports = router;

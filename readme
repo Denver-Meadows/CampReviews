@@ -94,3 +94,9 @@ Since we are current populated the reviews when showing the campground.
 We can use a nested route to populate the author of the review in the campground show route.
 Hide the delete button if not author.
 Protect delete route on review by adding isLoggedIn and isReviewAuthor.
+
+Refactoring Routes:
+Controllers for our routes.  Controllers are objects that we'll export from other files.
+These are from the MVC pattern.  Create new controllers dir.
+Refactor all of our routes.
+
