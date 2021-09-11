@@ -18,6 +18,17 @@ const validateCampground = (req, res, next) => {
   }
 };
 
+// Checks if the signed in User is the author and then allows them to update campground
+const isAuthor = async(req, res, next) => {
+  const { id } = req.params;
+  const campground = await Campground.findById(id);
+  if (!campground.author.equals(req.user._id)) {
+    req.flash('error', 'You do not have permission to do that.')
+    return res.redirect(`/campgrounds/${id}`)
+  }
+  next();
+}
+
 // Index
 router.get('/', catchAsync(async (req, res) => {
   const campgrounds = await Campground.find({})
@@ -51,28 +62,29 @@ router.get('/:id', catchAsync(async (req, res) => {
 }));
 
 // Edit
-router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
-  const campground = await Campground.findById(req.params.id)
+router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const campground = await Campground.findById(id)
+  if (!campground) {
+    req.flash('error', 'Cannot find that campground!')
+    return res.redirect('/campgrounds')
+  }
   res.render(`campgrounds/edit`, { campground })
 }));
 
 // Delete 2 
-router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, isAuthor, catchAsync(async (req, res) => {
   const { id } = req.params;
-  const campground = await Campground.findByIdAndDelete(id)
+  await Campground.findByIdAndDelete(id)
   req.flash('success', 'Successfully deleted campground!')
   res.redirect('/campgrounds')
 }))
 
-// Put for 2nd part of edit 
-router.put('/:id', isLoggedIn, validateCampground, catchAsync(async (req, res) => {
+// Put for 2nd part of edit -- isLoggenIn gives us access to req.user
+router.put('/:id', isLoggedIn, isAuthor, validateCampground, catchAsync(async (req, res) => {
   const { id } = req.params;
-  // old way of finding an editing prior to auth -- const campground = await Campground.findByIdAndUpdate(id, {...req.body}, {useFindAndModify: false}) // pass in the id and then spread the req.body object into the new object
-  const campground = await Campground.findById(id);
-  if (!campground.author.equals(req.user._id)) {
-    req.flash('error', 'You do not have permission to do that.')
-    return res.redirect(`/campgrounds/${id}`)
-  }
+  // pass in the id and then spread the req.body object into the new object
+  const campground = await Campground.findByIdAndUpdate(id, { ...req.body })
   req.flash('success', 'Successfully updated campground!')
   res.redirect(`/campgrounds/${campground._id}`)
 }))
