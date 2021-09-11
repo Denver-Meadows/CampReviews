@@ -100,3 +100,6 @@ Controllers for our routes.  Controllers are objects that we'll export from othe
 These are from the MVC pattern.  Create new controllers dir.
 Refactor all of our routes.
 
+Another way to restructure routes with Express Router.
+router.route allows us to define a single route which then handles different http request verbs.
+On our main campgrounds '/' route, we can chain on each of the verbs.
