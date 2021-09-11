@@ -1,6 +1,7 @@
 const Campground = require('../models/campground'); // import models
 const { campgroundSchema } = require('../schemas.js'); // Destructuring here, we can call campgroundSchema below in the validate function.
 const ExpressError = require('../utilities/ExpressError');
+const { reviewSchema } = require('../schemas.js'); // Destructuring here, we can call reviewSchema below in the validate function.
 
 module.exports.isLoggedIn = (req, res, next) => {
   if(!req.isAuthenticated()) {
@@ -30,6 +31,18 @@ module.exports.isAuthor = async(req, res, next) => {
   if (!campground.author.equals(req.user._id)) {
     req.flash('error', 'You do not have permission to do that.')
     return res.redirect(`/campgrounds/${id}`)
+  } else {
+    next();
   }
-  next();
-}
+};
+
+// Creating middleware function to validate Review with Joi -- reviews.js
+module.exports.validateReview = (req, res, next) => {
+  const result = reviewSchema.validate(req.body)
+  if (result.error) {
+    const msg = result.error.details.map(el => el.message).join(', ')
+    throw new ExpressError(msg, 400)
+  } else {
+    next()
+  }
+};

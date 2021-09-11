@@ -3,19 +3,8 @@ const router = express.Router( {mergeParams: true }); // In order to get access 
 const catchAsync = require('../utilities/catchAsync');
 const Review = require('../models/review'); // import models
 const Campground = require('../models/campground'); // import models
-const ExpressError = require('../utilities/ExpressError');
-const { reviewSchema } = require('../schemas.js'); // Destructuring here, we can call reviewSchema below in the validate function.
+const { validateReview } = require('../middleware/middleware');
 
-// Creating middleware function to validate Review with Joi.
-const validateReview = (req, res, next) => {
-  const result = reviewSchema.validate(req.body)
-  if (result.error) {
-    const msg = result.error.details.map(el => el.message).join(', ')
-    throw new ExpressError(msg, 400)
-  } else {
-    next()
-  }
-};
 
 // Create reviews
 router.post('/', validateReview, catchAsync(async(req, res) => {
