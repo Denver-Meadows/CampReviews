@@ -3,7 +3,7 @@ const router = express.Router( {mergeParams: true }); // In order to get access 
 const catchAsync = require('../utilities/catchAsync');
 const Review = require('../models/review'); // import models
 const Campground = require('../models/campground'); // import models
-const { validateReview, isLoggedIn } = require('../middleware/middleware');
+const { validateReview, isLoggedIn, isReviewAuthor } = require('../middleware/middleware');
 
 
 // Create reviews
@@ -22,7 +22,7 @@ router.post('/', validateReview, isLoggedIn, catchAsync(async(req, res) => {
 // Delete reviews
 // For this route, we will need the campground id and then the review id so we can delete the review from that campground on the db
 // Will need a delete form on the show page
-router.delete('/:reviewId', catchAsync(async(req, res) => {
+router.delete('/:reviewId', isLoggedIn, isReviewAuthor, catchAsync(async(req, res) => {
   const { id, reviewId } = req.params
   // Pull operator in mongoose removes from an existing array all instatnces of a value that match a specified condition
   await Campground.findByIdAndUpdate(id, { $pull: {reviews: reviewId} }); // we find the campground by the id and then "pull" the reviewId from the reviews

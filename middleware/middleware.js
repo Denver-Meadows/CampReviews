@@ -1,4 +1,5 @@
 const Campground = require('../models/campground'); // import models
+const Review = require('../models/review'); // import models
 const { campgroundSchema } = require('../schemas.js'); // Destructuring here, we can call campgroundSchema below in the validate function.
 const ExpressError = require('../utilities/ExpressError');
 const { reviewSchema } = require('../schemas.js'); // Destructuring here, we can call reviewSchema below in the validate function.
@@ -29,6 +30,18 @@ module.exports.isAuthor = async(req, res, next) => {
   const { id } = req.params;
   const campground = await Campground.findById(id);
   if (!campground.author.equals(req.user._id)) {
+    req.flash('error', 'You do not have permission to do that.')
+    return res.redirect(`/campgrounds/${id}`)
+  } else {
+    next();
+  }
+};
+
+// Checks if the signed in User is the author and then allows them to update campground
+module.exports.isReviewAuthor = async(req, res, next) => {
+  const { id, reviewId } = req.params; // review routes are setup with reviewId
+  const review = await Review.findById(reviewId);
+  if (!review.author.equals(req.user._id)) { // if who is logged in is the author, allow deletion.  req.user is available because isLoggedIn is called on this route as well
     req.flash('error', 'You do not have permission to do that.')
     return res.redirect(`/campgrounds/${id}`)
   } else {

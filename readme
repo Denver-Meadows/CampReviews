@@ -93,4 +93,4 @@ Display the user name of the review:
 Since we are current populated the reviews when showing the campground. 
 We can use a nested route to populate the author of the review in the campground show route.
 Hide the delete button if not author.
-
+Protect delete route on review by adding isLoggedIn and isReviewAuthor.
