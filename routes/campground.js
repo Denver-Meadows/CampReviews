@@ -2,32 +2,8 @@ const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utilities/catchAsync');
 const Campground = require('../models/campground'); // import models
-const ExpressError = require('../utilities/ExpressError');
-const { campgroundSchema } = require('../schemas.js'); // Destructuring here, we can call campgroundSchema below in the validate function.
-const isLoggedIn = require('../middleware/middleware')
-
-// Creating a middleware function to validate Campground with Joi.
-const validateCampground = (req, res, next) => {
-  // Saving the result of the validation and passing an error if something is wrong
-  const result = campgroundSchema.validate(req.body)
-  if (result.error) { 
-    const msg = result.error.details.map(el => el.message).join(', ')
-    throw new ExpressError(msg, 400)
-  } else {
-    next()
-  }
-};
-
-// Checks if the signed in User is the author and then allows them to update campground
-const isAuthor = async(req, res, next) => {
-  const { id } = req.params;
-  const campground = await Campground.findById(id);
-  if (!campground.author.equals(req.user._id)) {
-    req.flash('error', 'You do not have permission to do that.')
-    return res.redirect(`/campgrounds/${id}`)
-  }
-  next();
-}
+// const ExpressError = require('../utilities/ExpressError');
+const { isLoggedIn, validateCampground, isAuthor } = require('../middleware/middleware')
 
 // Index
 router.get('/', catchAsync(async (req, res) => {
