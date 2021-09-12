@@ -108,3 +108,12 @@ Adding in star rating system:
 Using a library called Starability.
 Using the basic star rating system.  Need to take that css and add to our pulic styles.
 Then using the code from their github, added this rating system to our show page.
+
+Image Uploading:
+A regular HTML form cannot send files to our server. We also need a place to store the images.
+Setup a form to accept files, store those files in Cloudinary.  Cloudinary will send URL's with our stored photos.  DB will hold the URLs.
+Needed to change our form to have an encType that allows for files. 
+Add an input for a file. 
+Go to route where this form is submitted and add the Multer middleware which will parse the new encType request.
+Signed up to Cloudinary which provides API keys and credinitials. 
+There is file that we don't include or share with other people.  It's called dotenv.

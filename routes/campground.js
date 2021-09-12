@@ -3,6 +3,8 @@ const router = express.Router();
 const catchAsync = require('../utilities/catchAsync');
 const { isLoggedIn, validateCampground, isAuthor } = require('../middleware/middleware');
 const campgrounds = require('../controllers/campgrounds');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' }) // tell multer where to store the files.
 
 // Usering router.route to chain commands on a specific route (refactoring all routes)
 router.route('/')
