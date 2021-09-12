@@ -1,3 +1,9 @@
+// If not in production -- get access to the .env variables
+if (process.env.NODE_ENV !== "production") {
+  require('dotenv').config();
+};
+//console.log(process.env.CLOUDINARY_SECRET) // Seeing how to get this info
+
 const express = require('express');
 const app = express();
 const path = require('path');

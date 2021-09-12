@@ -117,3 +117,5 @@ Add an input for a file.
 Go to route where this form is submitted and add the Multer middleware which will parse the new encType request.
 Signed up to Cloudinary which provides API keys and credinitials. 
 There is file that we don't include or share with other people.  It's called dotenv.
+Setup a .env file in the main directory and install dotenv.  Setup Cloudinary 
+Install cloudinary and multer-storage-cloudinary
