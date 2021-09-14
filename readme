@@ -124,3 +124,4 @@ Updated the model --needs to store and array of images with cloudinary:
 need the path and filename which is provided by req.file(s). 
 We need to update the route to include the the multer middleware (upload)
 This also means we need to update the controller of the route.  see the map method in createCampground
+Loop over images on show page to display
