@@ -25,7 +25,7 @@ router.get('/new', isLoggedIn, campgrounds.renderNewForm)
 router.route('/:id')
   .get(catchAsync(campgrounds.showCampground)) // Show
   .delete(isLoggedIn, isAuthor, catchAsync(campgrounds.deleteCampground)) // Delete
-  .put(isLoggedIn, isAuthor, validateCampground, catchAsync(campgrounds.updateCampground)) // Put for 2nd part of edit -- isLoggenIn gives us access to req.user
+  .put(isLoggedIn, isAuthor, upload.array('images') ,validateCampground, catchAsync(campgrounds.updateCampground)) // Put for 2nd part of edit -- isLoggenIn gives us access to req.user
 
 // Edit
 router.get('/:id/edit', isLoggedIn, isAuthor, catchAsync(campgrounds.renderEditForm));
