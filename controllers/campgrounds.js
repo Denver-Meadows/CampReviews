@@ -16,6 +16,7 @@ module.exports.createCampground = async (req, res, next) => {
   // Since we are checking if someone is logged in and we have access to req.user thanks to passport, we can take the user_id and save it as the user on the campground
   campground.author = req.user._id;  // author in our schema is an objectId, therefore we can set the id to the req.user_id
   await campground.save();
+  console.log(campground.images)
   req.flash('success', 'Successfully made a new campground!')
   res.redirect(`campgrounds/${campground._id}`)
 };
