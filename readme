@@ -120,3 +120,7 @@ There is file that we don't include or share with other people.  It's called dot
 Setup a .env file in the main directory and install dotenv.  Setup Cloudinary 
 Install cloudinary and multer-storage-cloudinary
 Create cloudinary file and handle basic cloudinary setup.
+Updated the model --needs to store and array of images with cloudinary:  
+need the path and filename which is provided by req.file(s). 
+We need to update the route to include the the multer middleware (upload)
+This also means we need to update the controller of the route.  see the map method in createCampground

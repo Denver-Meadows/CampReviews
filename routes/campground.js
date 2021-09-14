@@ -16,13 +16,8 @@ const upload = multer({ storage }); // tell multer where to store the files whic
 // Usering router.route to chain commands on a specific route (refactoring all routes)
 router.route('/')
   .get(catchAsync(campgrounds.index)) // index
-  .post(upload.single('images'), (req, res) => {
-    res.send('working')
-    console.log(req.file)
-    console.log(req.body)
-  })
-  
-  // .post(isLoggedIn, validateCampground ,catchAsync(campgrounds.createCampground)) // 2nd Part of Create (posting data from form)
+  .post(isLoggedIn, upload.array('images'), validateCampground, catchAsync(campgrounds.createCampground)) // 2nd Part of Create (posting data from form)
+
 
 // Create upload.array('image'),
 router.get('/new', isLoggedIn, campgrounds.renderNewForm)

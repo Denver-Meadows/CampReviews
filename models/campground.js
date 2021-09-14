@@ -7,17 +7,12 @@ const CampgroundSchema = new Schema({
     type: String,
     required: true,
   },
-  // needs to store and array of images with cloudinary
-//   images: [
-//     {
-//       url: String,
-//       filename: String,
-//   }
-// ],
-  image: {
-    type: String,
-
-  },
+  images: [
+    {
+      url: String,
+      filename: String,
+    }
+  ],
   price: {
     type: Number,
     required: true,
