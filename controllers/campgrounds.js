@@ -9,11 +9,14 @@ module.exports.renderNewForm = (req, res) => {
   res.render('campgrounds/new')
 };
 
+// We now have access to req.body from multer and req.files.
 module.exports.createCampground = async (req, res, next) => {
   const campground = new Campground(req.body)
+  // campground.images = req.files.map(f => ({url: f.path, filename: f.filename})) // map over the array that is returnedthe url and filename for our model
   // Since we are checking if someone is logged in and we have access to req.user thanks to passport, we can take the user_id and save it as the user on the campground
   campground.author = req.user._id;  // author in our schema is an objectId, therefore we can set the id to the req.user_id
   await campground.save();
+  console.log(campground)
   req.flash('success', 'Successfully made a new campground!')
   res.redirect(`campgrounds/${campground._id}`)
 };
