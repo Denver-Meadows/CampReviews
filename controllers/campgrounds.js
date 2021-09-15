@@ -1,4 +1,5 @@
 const Campground = require('../models/campground'); // import models
+const { cloudinary } = require('../cloudinary') // need to bring over to delete images from cloudinary in updateCampground
 
 module.exports.index = async (req, res) => {
   const campgrounds = await Campground.find({})
@@ -55,10 +56,16 @@ module.exports.deleteCampground = async (req, res) => {
 module.exports.updateCampground = async (req, res) => {
   const { id } = req.params;
   const campground = await Campground.findByIdAndUpdate(id, { ...req.body })   // pass in the id and then spread the req.body object into the new object
-  console.log(req.body)
   const imgs = req.files.map(f => ({url: f.path, filename: f.filename})) // create array of photos
   campground.images.push(...imgs) // spread and push the imgs into the current array
   campground.save()
+  console.log(req.body)
+  if (req.body.deleteImages) {  // delete from db & cloudinary
+    for(let filename of req.body.deleteImages){
+      await cloudinary.uploader.destroy(filename) // (cloudinary) loop over filenames, method to destroy on cloudinary
+    }
+    await campground.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages }}}}) // (db) pull from images arr, all imgs where the filename is in the req.body.deleteImages array
+  }
   req.flash('success', 'Successfully updated campground!')
   res.redirect(`/campgrounds/${campground._id}`)
 };
