@@ -125,3 +125,10 @@ need the path and filename which is provided by req.file(s).
 We need to update the route to include the the multer middleware (upload)
 This also means we need to update the controller of the route.  see the map method in createCampground
 Loop over images on show page to display
+
+Adding a delete option when editing a campground.
+Loop through and display images
+Add checkboxes with proper names and values.
+Needed to update schema to include the new deleteImages field (array);
+By adding the value to the new checkbox input and the name = deleteImages[], when parsing the body of this form, the value is added to the deleteImages array.
+We can take the value, which is the path/filename and delete that from Cloudinary and our DB.

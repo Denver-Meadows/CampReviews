@@ -31,6 +31,18 @@
           <label for="images" class="form-label">Upload Images</label>
           <input class="form-control" type="file" id="images" name="images" multiple>
         </div>
+
+        <%# Loop over each photo to display, add checkbox and have id and label set to index of that photo %> 
+        <%# Each img needs name and value to delete on serverside.  We are using the filename %> 
+        <div class="mb-3">
+          <% campground.images.forEach((img, i) => { %>
+            <img src="<%=img.url %>" alt="" class="img-thumbnail">
+            <div class="form-check-inline">
+              <input type="checkbox" id="image-<%= i %>" name="deleteImages[]" value="<%= img.filename %> ">
+            </div>
+            <label for="image-<%= i %>">Delete</label>
+          <% }) %> 
+        </div>
   
         <div class="mb-3">
           <button class="btn btn-success">Update Campground</button>

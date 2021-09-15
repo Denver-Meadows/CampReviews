@@ -54,8 +54,8 @@ module.exports.deleteCampground = async (req, res) => {
 
 module.exports.updateCampground = async (req, res) => {
   const { id } = req.params;
-  // pass in the id and then spread the req.body object into the new object
-  const campground = await Campground.findByIdAndUpdate(id, { ...req.body })
+  const campground = await Campground.findByIdAndUpdate(id, { ...req.body })   // pass in the id and then spread the req.body object into the new object
+  console.log(req.body)
   const imgs = req.files.map(f => ({url: f.path, filename: f.filename})) // create array of photos
   campground.images.push(...imgs) // spread and push the imgs into the current array
   campground.save()
