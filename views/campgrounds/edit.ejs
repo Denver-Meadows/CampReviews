@@ -15,10 +15,6 @@
         </div>
   
         <div class="mb-3">
-          <label class="form-label" for="images">Add/Update Images</label>
-          <input type="file" name="images" id="images" multiple>
-        </div>
-        <div class="mb-3">
           <label class="form-label" for="price">Campground Price</label>
           <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">$</span>
@@ -29,6 +25,11 @@
         <div class="mb-3">
           <label class="form-label" for="description">Description</label>
           <textarea class="form-control" type="text" id="description" name="description"><%= campground.description %> </textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="images" class="form-label">Upload Images</label>
+          <input class="form-control" type="file" id="images" name="images" multiple>
         </div>
   
         <div class="mb-3">
