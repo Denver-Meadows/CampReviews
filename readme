@@ -136,3 +136,6 @@ We can take the value, which is the path/filename and delete that from Cloudinar
 Maps:
 Display the location of the campground on a map with Mapbox
 Signup to Mapbox and add pulic token to .env file.
+Setup ability to get coordinates and geoJson.
+To store these coordinates as geoJson, mongoose/mongo has a default way to do that.
+We copied this pattern from the mongo docs

@@ -13,6 +13,17 @@ const CampgroundSchema = new Schema({
       filename: String,
     }
   ],
+  geometry: {
+    type: {
+      type: String,
+      enum: ['Point'],
+      required: true,
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+    }
+  },
   price: {
     type: Number,
     required: true,

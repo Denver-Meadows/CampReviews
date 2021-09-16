@@ -19,15 +19,15 @@ module.exports.createCampground = async (req, res, next) => {
     query: req.body.location,
     limit: 1,
   }).send(); // (must send the data) per docs, geoCoder has a forward and backware geocode.  These require a query string with the location and limit.
-  console.log(geoData)
-  res.send(geoData.body.features[0].geometry.coordinates)
-  // const campground = new Campground(req.body)
-  // campground.images = req.files.map(f => ({url: f.path, filename: f.filename})) // map over the array that is returned, add the url and filename for our model
-  // // Since we are checking if someone is logged in and we have access to req.user thanks to passport, we can take the user_id and save it as the user on the campground
-  // campground.author = req.user._id;  // author in our schema is an objectId, therefore we can set the id to the req.user_id
-  // await campground.save();
-  // req.flash('success', 'Successfully made a new campground!')
-  // res.redirect(`campgrounds/${campground._id}`)
+  const campground = new Campground(req.body)
+  campground.geometry = geoData.body.features[0].geometry; // adding the geoJson data to the db
+  campground.images = req.files.map(f => ({url: f.path, filename: f.filename})) // map over the array that is returned, add the url and filename for our model
+  // Since we are checking if someone is logged in and we have access to req.user thanks to passport, we can take the user_id and save it as the user on the campground
+  campground.author = req.user._id;  // author in our schema is an objectId, therefore we can set the id to the req.user_id
+  await campground.save();
+  console.log(campground)
+  req.flash('success', 'Successfully made a new campground!')
+  res.redirect(`campgrounds/${campground._id}`)
 };
 
 module.exports.showCampground = async (req, res) => {
