@@ -138,4 +138,7 @@ Display the location of the campground on a map with Mapbox
 Signup to Mapbox and add pulic token to .env file.
 Setup ability to get coordinates and geoJson.
 To store these coordinates as geoJson, mongoose/mongo has a default way to do that.
-We copied this pattern from the mongo docs
+We copied this pattern from the mongo docs -- saved to db
+To display a map we will use the Mapbox GL JS library.  This will render a customized map.
+Add scripts to boilerplate.
+Per docs, added div and script to show.ejs
