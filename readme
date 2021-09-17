@@ -150,4 +150,6 @@ Cut and pasted the JS from the docs into a new public/js/clusterMap file.
 Added the script to index.ejs and the map showed up
 Needed to reseed the db.  When we got each city, we also have the Lng/Lat.
 We are going to use the Lng/Lat coordinates in our seeds model.
-After playing around with the code, saved our data to a variable  on the index page and passed in to our clustermap.js formatted in an object of features as required by the data that was preset
+After playing around with the code, saved our data to a variable  on the index page and passed into our clustermap.js-- 
+--formatted in an object of features as required by the data that was preset
+changed the default name from earthquakes to campground
