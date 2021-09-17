@@ -142,3 +142,10 @@ We copied this pattern from the mongo docs -- saved to db
 To display a map we will use the Mapbox GL JS library.  This will render a customized map.
 Add scripts to boilerplate.
 Per docs, added div and script to show.ejs
+
+Cluster Map:
+Googled and first result was mapbox which is what we have been using. 
+Under docs, found exactly what we were looking for.
+Cut and pasted the JS from the docs into a new public/js/clusterMap file.
+Added the script to index.ejs and the map showed up
+Needed to reseed the db.
