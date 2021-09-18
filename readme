@@ -167,4 +167,5 @@ We could have used this instead of Joi but the syntax is a bit different.
 Instead of replacing Joi with express-validator, we can use them together.
 Joi allows us to write extensions or methods that we can add on to Joi that allow us to sanitize html.
 We created an escapeHTML method that we can add to all strings to confirm they are safe.
-THen we installed sanitize-html which will actual sanitize the html input.
+Then we installed sanitize-html which will actual sanitize the html input. This will strip away the html or script tags, etc.
+If someone tried passing in a script, it would catch that and cancel it.
