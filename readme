@@ -158,3 +158,13 @@ We currently do not have any data stored in there (which is what they are using 
 Since we are using GeoJson and Mapbox, Mapbox has a standard format they use with storing data -- per the docs.
 Mapbox is looking for the properties property.  We can create this format with mongoose.
 Using a mongoose virtual -- see campground model
+
+SECURITY:
+SQL-Injection (Mongo-Injection) - installed express-mongo-sanitize.  Need to require and use in app.js
+XSS - to avoide XSS we are going to use express-validator.  
+Express-validator is just like Joi but offers sanitization which is what we need.  
+We could have used this instead of Joi but the syntax is a bit different.
+Instead of replacing Joi with express-validator, we can use them together.
+Joi allows us to write extensions or methods that we can add on to Joi that allow us to sanitize html.
+We created an escapeHTML method that we can add to all strings to confirm they are safe.
+THen we installed sanitize-html which will actual sanitize the html input.
