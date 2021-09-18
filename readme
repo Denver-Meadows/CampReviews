@@ -152,4 +152,9 @@ Needed to reseed the db.  When we got each city, we also have the Lng/Lat.
 We are going to use the Lng/Lat coordinates in our seeds model.
 After playing around with the code, saved our data to a variable  on the index page and passed into our clustermap.js-- 
 --formatted in an object of features as required by the data that was preset
-changed the default name from earthquakes to campground
+changed the default name from earthquakes to campground.
+Updating the popup text.  The default e.features[0] has a property called properties.
+We currently do not have any data stored in there (which is what they are using to store default info on earthquakes and tsunami's)
+Since we are using GeoJson and Mapbox, Mapbox has a standard format they use with storing data -- per the docs.
+Mapbox is looking for the properties property.  We can create this format with mongoose.
+Using a mongoose virtual -- see campground model
