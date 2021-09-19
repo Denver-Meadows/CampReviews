@@ -21,6 +21,7 @@ const passport = require("passport");
 const passportStrategy = require("passport-local");
 
 const mongoSanitize = require("express-mongo-sanitize");
+const helmet = require("helmet");
 
 // Importing catchAsync
 const catchAsync = require("./utilities/catchAsync");
@@ -72,6 +73,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method")); // pass in query string we want to use
 app.use(express.static(path.join(__dirname, "public")));
 app.use(mongoSanitize()); // security for queries
+app.use(helmet({ contentSecurityPolicy: false })); // enables all 11 of the middleware that helmet comes with
 
 // PASSPORT
 app.use(passport.initialize());

@@ -169,3 +169,7 @@ Joi allows us to write extensions or methods that we can add on to Joi that allo
 We created an escapeHTML method that we can add to all strings to confirm they are safe.
 Then we installed sanitize-html which will actual sanitize the html input. This will strip away the html or script tags, etc.
 If someone tried passing in a script, it would catch that and cancel it.
+
+HELMET:
+required and app.use to get access to all 11 middlewares. 
+contentSecurityPolicy causes some issues so we have it deactivated right now.
