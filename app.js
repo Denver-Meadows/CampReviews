@@ -52,12 +52,14 @@ app.set("views", path.join(__dirname, "views"));
 
 // Configuring session
 const sessionConfig = {
+  name: "_sess",
   secret: "willNeedToUpdateThisSecretForProduction",
   resave: false,
   saveUninitialized: true,
   // We can add some additional options for the cookie
   cookie: {
     httpOnly: true, // helps with security
+    // secure: true,
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // expires in a week.  Date.now is in milliseconds so we need the match to convert
     maxAge: 1000 * 60 * 60 * 24 * 7, // maxAge is a week
   },
