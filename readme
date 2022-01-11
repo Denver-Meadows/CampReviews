@@ -173,3 +173,12 @@ If someone tried passing in a script, it would catch that and cancel it.
 HELMET:
 required and app.use to get access to all 11 middlewares. 
 contentSecurityPolicy causes some issues so we have it deactivated right now.
+
+Mongo Atlas:
+Is the global cloud database service for modern applications.  This way our DB is hosted by the cloud and not
+locally on our machine.
+Setup user and password.  The user is needed to be the primary person allowed to read and write to the DB.
+Followed all steps to create a connection to MongoDB Atlas Cloud Service
+
+Heroku:
+Created account.  Logged in via Heroku CLI on machine.
