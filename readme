@@ -182,3 +182,6 @@ Followed all steps to create a connection to MongoDB Atlas Cloud Service
 
 Heroku:
 Created account.  Logged in via Heroku CLI on machine.
+Used git push heroku master from terminal
+To view errors, typed heroku logs --tail
+needed to create start script in package.json
