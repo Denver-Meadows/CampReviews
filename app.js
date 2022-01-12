@@ -31,7 +31,7 @@ const ejsMate = require("ejs-mate");
 const methodOverride = require("method-override");
 
 // connecting to Mongo Atlas
-const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/camp-review";
+const dbUrl = process.env.DB_URL;
 
 const mongoose = require("mongoose");
 mongoose.connect(dbUrl, {
@@ -53,7 +53,7 @@ mongoose.connection.once("open", () => {
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-const secret = process.env.SECRET || "willNeedToUpdateThisSecretForProduction";
+const secret = process.env.SECRET;
 
 // Configuring session
 const sessionConfig = {
