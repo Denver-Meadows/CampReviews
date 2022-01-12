@@ -145,8 +145,8 @@
 <%# Setting the mapToken so we have access to it when the script at the bottom
 of this page runs. %>
 <script>
-  const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
-  const campground = <%-JSON.stringify(campground)%>
+  const mapToken = "<%-process.env.MAPBOX_TOKEN%>";
+  const campground = "<%-JSON.stringify(campground)%>";
 </script>
 
 <script src="/js/showPageMap.js"></script>

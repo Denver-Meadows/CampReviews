@@ -178,7 +178,8 @@ Mongo Atlas:
 Is the global cloud database service for modern applications.  This way our DB is hosted by the cloud and not
 locally on our machine.
 Setup user and password.  The user is needed to be the primary person allowed to read and write to the DB.
-Followed all steps to create a connection to MongoDB Atlas Cloud Service
+Followed all steps to create a connection to MongoDB Atlas Cloud Service.
+Made sure to allow access from all IP servers
 
 Heroku:
 Created account.  Logged in via Heroku CLI on machine.
