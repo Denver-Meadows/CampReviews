@@ -70,6 +70,8 @@ const sessionConfig = {
     maxAge: 1000 * 60 * 60 * 24 * 7, // maxAge is a week
   },
 };
+
+app.use("/static", express.static("./static/"));
 app.use(session(sessionConfig));
 app.use(flash());
 
