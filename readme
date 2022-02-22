@@ -1,188 +1,28 @@
-Express, Mongo and Node are all setup and working.
-All REST routes have been setup and are working.
-Basic styling has been added for our standard campground Model.
+# CampAdvisor
 
-Errors:   
-To handle errors we implemented a utilities file which has the catchAsync and ExpressError files.
-Review the files in the Express_Errors_CODE for a refresh on how these 2 error handling techinques work.
-We catch any errors and pass them to the next() error handler to be resolved.
-These steps required the app.all call and app.use(primary error handling) call.
+CampAdvisor is a full stack JavaScript application that uses the MVC architecture with full authentication and authorization allowing 
+users to sign in, add, delete and review campgrounds.
 
-Validation:
-We used bootstrap features to implement user side validation on the forms.  Forms will not allow to submit until
-filled out and turn green and red to indicate what needs to happen.
-For the server side validation, we are using Joi.  With Joi we can create a Schema and validate prior to mongoose
-handling and trying to send to the db.  We created a function that we can run as middleware.
-The validateCampground middleware will confirm validations and throw an error if something is wrong. 
+## Technologies used to build this site:
 
-Review Model Implementation:
-We need to build a model for our Reviews so we can store this data in the DB.
-Built the reivew schema and added an array of ObjectId's to the campground model so we can link reviews to a campground.
-See notes in the app.post('/campgrounds/:id/reviews', catchAsync(async(req, res) route on finalizing this build.
-Used bootstrap for UI validation and Joi for server-side validation.
-Made it so we can delete comments.
-Now if a campground is deleted, we need to delete all reviews associated with it which requires Mongoose middleware.
- We implement this middleware with the campground schema file. 
+Node.js </br>
+EJS </br>
+Express </br>
+MongoDB </br>
+Mongoose </br>
 
-Express Router:
-Refactored all routes with express.Router.  We needed to pass in an option of mergeParams in order to have access to req.params.
-mergeParams is needed because of the way Router handles Params.
 
-Static Assets:
-We need to setup a public dir for our static assets.  
-We also need to tell express to serve our public dir which we did with app.use(static)
-We created separate dirs for js and styles.
-Our first file we created was the validateForms.js file in our js dir.  
-We put the code from bootstrap that validates the forms and then pass that script to our boilerplate.
-We also updated the path on the app.use(static) to include path.join.
+### `Dependencies`
 
-Session:
-Installed and required express-session
-Used some basic config with session in app.index
+mapbox </br>
+cloudinary </br>
+helmet </br>
+joi </br>
+multer </br>
+passport </br>
+sanitize-html </br>
+starability </br>
 
-Flash:
-Installed and required connect-flash, and app.use(flash)
-Added a req.flash to our new campground
-Before any route handlers in app.js, we setup middleware to pass in the flash msg and make it available on all routes/requests
-Now that 'success' is available on all routes, we passed in success to our boilerplate to display it.
-Basic setup complete.
-Used bootstrap to create flash success and errors partials.
-Added some bootstrap styling to the message.
-Then added Flash messages where needed in the app 
+### `Languages`
 
-Authentication:
-We are using passport to implement Authentication into our app. 
-Passport has many different logins (twitter, facebook, etc).  We are going to use passport-local.
-There is also passport for mongoose.  We are going to install passport, passport-local and passport-local-mongoose.
-Created the user model with passport.
-Required passport and passport local in main app file -- added all the methods needed for passport Authentication.
-Created routes for new users
-Created routes for logging in
-
-Checking if logged in and allowing access:
-Passport also gives us access to a method called "isAuthenticated" on the req object which will check if a user is logged in.
-Then we created a middleware dir and added this middleware in there so we could use where ever we want to check if logged in.
-
-Show and hide links (login, register, logout) based on if someone is logged in or not.
-Passport adds a method called 'user' on the req object.  Thanks to session, we have the user info for that session on the req.user.
-In the app.js, we are added middleware to the flash middleware which sets the currentUser to req.user.
-Then with ejs, we check if there is a currentUser to display (login, register, logout)
-
-AUTHORIZATION:
-Adding an author to a campground.
-Add a field to each campground model that has the userId.  
-When you save a campground, we will take the current userId (whatever is saved in req.User session) and save that on the campground.
-Then we can assign a user to a campground and display it.
-
-Make it so that only the user can see the edit and delete buttons on campgrounds. 
-Since we made currentUser available on all templates in app.js (with app.use).  
-We can use ejs to write the logic to check if there is a user (someone signed in) and if that user is the author.
-We also need to protect these on the backend, in our routes.
-For example, when updating a campground, we need to check if the currentUser is the author.
-Right now we are finding and updating the campground.  Now we need find a campground, check is currentUser = author and then proceed accordingly.
-The best way to do that will be with middleware which was added.
-
-Linking reviews to users:
-Add the ref/objectid to the review model.
-Hide the form if you are not logged in.  Use the review template to wrap some ejs to check if logged in.
-That protects the UI, but now we need to protect the route.  
-The post route for creating a review, we can add the isLoggedIn middleware.
-In this route, we can now associate the author of this review to the current req.user (which is coming from isLoggedIn)
-
-Display the user name of the review:
-Since we are current populated the reviews when showing the campground. 
-We can use a nested route to populate the author of the review in the campground show route.
-Hide the delete button if not author.
-Protect delete route on review by adding isLoggedIn and isReviewAuthor.
-
-Refactoring Routes:
-Controllers for our routes.  Controllers are objects that we'll export from other files.
-These are from the MVC pattern.  Create new controllers dir.
-Refactor all of our routes.
-
-Another way to restructure routes with Express Router.
-router.route allows us to define a single route which then handles different http request verbs.
-On our main campgrounds '/' route, we can chain on each of the verbs.
-
-Adding in star rating system:
-Using a library called Starability.
-Using the basic star rating system.  Need to take that css and add to our pulic styles.
-Then using the code from their github, added this rating system to our show page.
-
-Image Uploading:
-A regular HTML form cannot send files to our server. We also need a place to store the images.
-Setup a form to accept files, store those files in Cloudinary.  Cloudinary will send URL's with our stored photos.  DB will hold the URLs.
-Needed to change our form to have an encType that allows for files. 
-Add an input for a file. 
-Go to route where this form is submitted and add the Multer middleware which will parse the new encType request.
-Signed up to Cloudinary which provides API keys and credinitials. 
-There is file that we don't include or share with other people.  It's called dotenv.
-Setup a .env file in the main directory and install dotenv.  Setup Cloudinary 
-Install cloudinary and multer-storage-cloudinary
-Create cloudinary file and handle basic cloudinary setup.
-Updated the model --needs to store and array of images with cloudinary:  
-need the path and filename which is provided by req.file(s). 
-We need to update the route to include the the multer middleware (upload)
-This also means we need to update the controller of the route.  see the map method in createCampground
-Loop over images on show page to display
-
-Adding a delete option when editing a campground.
-Loop through and display images
-Add checkboxes with proper names and values.
-Needed to update schema to include the new deleteImages field (array);
-By adding the value to the new checkbox input and the name = deleteImages[], when parsing the body of this form, the value is added to the deleteImages array.
-We can take the value, which is the path/filename and delete that from Cloudinary and our DB.
-
-Maps:
-Display the location of the campground on a map with Mapbox
-Signup to Mapbox and add pulic token to .env file.
-Setup ability to get coordinates and geoJson.
-To store these coordinates as geoJson, mongoose/mongo has a default way to do that.
-We copied this pattern from the mongo docs -- saved to db
-To display a map we will use the Mapbox GL JS library.  This will render a customized map.
-Add scripts to boilerplate.
-Per docs, added div and script to show.ejs
-
-Cluster Map:
-Googled and first result was mapbox which is what we have been using. 
-Under docs, found exactly what we were looking for.
-Cut and pasted the JS from the docs into a new public/js/clusterMap file.
-Added the script to index.ejs and the map showed up
-Needed to reseed the db.  When we got each city, we also have the Lng/Lat.
-We are going to use the Lng/Lat coordinates in our seeds model.
-After playing around with the code, saved our data to a variable  on the index page and passed into our clustermap.js-- 
---formatted in an object of features as required by the data that was preset
-changed the default name from earthquakes to campground.
-Updating the popup text.  The default e.features[0] has a property called properties.
-We currently do not have any data stored in there (which is what they are using to store default info on earthquakes and tsunami's)
-Since we are using GeoJson and Mapbox, Mapbox has a standard format they use with storing data -- per the docs.
-Mapbox is looking for the properties property.  We can create this format with mongoose.
-Using a mongoose virtual -- see campground model
-
-SECURITY:
-SQL-Injection (Mongo-Injection) - installed express-mongo-sanitize.  Need to require and use in app.js
-XSS - to avoide XSS we are going to use express-validator.  
-Express-validator is just like Joi but offers sanitization which is what we need.  
-We could have used this instead of Joi but the syntax is a bit different.
-Instead of replacing Joi with express-validator, we can use them together.
-Joi allows us to write extensions or methods that we can add on to Joi that allow us to sanitize html.
-We created an escapeHTML method that we can add to all strings to confirm they are safe.
-Then we installed sanitize-html which will actual sanitize the html input. This will strip away the html or script tags, etc.
-If someone tried passing in a script, it would catch that and cancel it.
-
-HELMET:
-required and app.use to get access to all 11 middlewares. 
-contentSecurityPolicy causes some issues so we have it deactivated right now.
-
-Mongo Atlas:
-Is the global cloud database service for modern applications.  This way our DB is hosted by the cloud and not
-locally on our machine.
-Setup user and password.  The user is needed to be the primary person allowed to read and write to the DB.
-Followed all steps to create a connection to MongoDB Atlas Cloud Service.
-Made sure to allow access from all IP servers
-
-Heroku:
-Created account.  Logged in via Heroku CLI on machine.
-Used git push heroku master from terminal
-To view errors, typed heroku logs --tail
-needed to create start script in package.json
+Written with JavaScript, EJS and CSS.
